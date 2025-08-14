@@ -259,10 +259,10 @@ The above command will create a Solana OFT which will have only the OFT Store as
 
 > For an elaboration on the command params for this command to create an Solana OFT, refer to the section [Create Solana OFT](#create-solana-oft)
 
-### Deploy a sepolia OFT peer
+### Deploy the EVM AlphaOFT (Sepolia)
 
 ```bash
-pnpm hardhat lz:deploy # follow the prompts
+pnpm hardhat --network sepolia-testnet deploy --tags AlphaOFT
 ```
 
 ## Enable Messaging
@@ -311,6 +311,53 @@ Once the message is delivered, you will be able to click on the destination tran
 Congratulations, you have now sent an OFT cross-chain between Solana and Ethereum!
 
 > If you run into any issues, refer to [Troubleshooting](#troubleshooting).
+
+## Scripts: automated workflow
+
+A convenience script is provided to run the full workflow or individual steps non-interactively.
+
+Make it executable once:
+
+```bash
+chmod +x scripts/deploy-steps.sh
+```
+
+Examples:
+
+- Build Solana program artifacts
+```bash
+./scripts/deploy-steps.sh build_program
+```
+
+- Deploy Solana program and EVM AlphaOFT
+```bash
+./scripts/deploy-steps.sh deploy_program
+```
+
+- Create Solana OFT store (Devnet eid 40168), then initialize config and wire
+```bash
+./scripts/deploy-steps.sh create_oft_store
+./scripts/deploy-steps.sh init_solana_config
+./scripts/deploy-steps.sh wire_connections
+```
+
+- Test sends
+```bash
+# Sepolia -> Solana (amount=1)
+./scripts/deploy-steps.sh test_cross_chain_message_to_solana
+
+# Sepolia -> Holesky (amount=1)
+./scripts/deploy-steps.sh test_cross_chain_message_from_sepolia_to_holesky
+```
+
+- Full process (build, deploy, init, wire, verify, summary)
+```bash
+./scripts/deploy-steps.sh full_process
+```
+
+Notes:
+- The script reads environment from `.env` (Solana/EVM keys and RPCs). Ensure `SOLANA_PRIVATE_KEY` and either `PRIVATE_KEY` or `MNEMONIC` are set.
+- For Solana, the script targets Devnet (eid 40168) and uses `target/deploy/oft-keypair.json` as the program key.
 
 ## Next Steps
 

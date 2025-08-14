@@ -130,6 +130,9 @@ importers:
       '@nomicfoundation/hardhat-ethers':
         specifier: ^3.0.5
         version: 3.1.0(ethers@5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(hardhat@2.26.3(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.13.3(@swc/helpers@0.5.17))(@types/node@18.18.14)(typescript@5.9.2))(typescript@5.9.2)(utf-8-validate@5.0.10))
+      '@nomicfoundation/hardhat-verify':
+        specifier: 2.1.0
+        version: 2.1.0(hardhat@2.26.3(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.13.3(@swc/helpers@0.5.17))(@types/node@18.18.14)(typescript@5.9.2))(typescript@5.9.2)(utf-8-validate@5.0.10))
       '@nomiclabs/hardhat-ethers':
         specifier: ^2.2.3
         version: 2.2.3(ethers@5.8.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(hardhat@2.26.3(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.13.3(@swc/helpers@0.5.17))(@types/node@18.18.14)(typescript@5.9.2))(typescript@5.9.2)(utf-8-validate@5.0.10))
@@ -1385,6 +1388,11 @@ packages:
       ethers: ^5.7.2
       hardhat: ^2.26.0
 
+  '@nomicfoundation/hardhat-verify@2.1.0':
+    resolution: {integrity: sha512-ogRbwlzphOR2MK/TxDG/uOftEhVJtD81eBU32YZ/maqQOHYOPKymu7BvF9syp7b2fxID5/loEIvxizjW1yBvvQ==}
+    peerDependencies:
+      hardhat: ^2.26.0
+
   '@nomicfoundation/solidity-analyzer-darwin-arm64@0.1.2':
     resolution: {integrity: sha512-JaqcWPDZENCvm++lFFGjrDd8mxtf+CtLd2MiXvMNTBD33dContTZ9TWETwNFwg7JTJT5Q9HEecH7FA+HTSsIUw==}
     engines: {node: '>= 12'}
@@ -2619,6 +2627,10 @@ packages:
 
   caseless@0.12.0:
     resolution: {integrity: sha512-4tYFyifaFfGacoiObjJegolkwSU4xQNGbVgUiNYVUxbQ2x2lUsFvY4hVgVzGiIe6WLOPqycWXA40l+PWsxthUw==}
+
+  cbor@8.1.0:
+    resolution: {integrity: sha512-DwGjNW9omn6EwP70aXsn7FQJx5kO12tX0bZkaTjzdVFM6/7nhA4t0EENocKGx6D2Bch9PE2KzCUf5SceBdeijg==}
+    engines: {node: '>=12.19'}
 
   chai@4.5.0:
     resolution: {integrity: sha512-RITGBfijLkBddZvnn8jdqoTypxvqbOLYQkGGxXzeFjVHvudaPw0HNFD9x928/eUwYWd2dPCugVqspGALTZZQKw==}
@@ -4520,6 +4532,9 @@ packages:
   lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
 
+  lodash.clonedeep@4.5.0:
+    resolution: {integrity: sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==}
+
   lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
     deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
@@ -4828,6 +4843,10 @@ packages:
 
   node-releases@2.0.19:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
+
+  nofilter@3.1.0:
+    resolution: {integrity: sha512-l2NNj07e9afPnhAhvgVrCD/oy2Ai1yfLpuo3EpiO1jFTsB4sFz6oIfAfSZyQzVpkZQ9xS8ZS5g1jCBgq4Hwo0g==}
+    engines: {node: '>=12.19'}
 
   normalize-package-data@2.5.0:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
@@ -8354,6 +8373,21 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@nomicfoundation/hardhat-verify@2.1.0(hardhat@2.26.3(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.13.3(@swc/helpers@0.5.17))(@types/node@18.18.14)(typescript@5.9.2))(typescript@5.9.2)(utf-8-validate@5.0.10))':
+    dependencies:
+      '@ethersproject/abi': 5.8.0
+      '@ethersproject/address': 5.8.0
+      cbor: 8.1.0
+      debug: 4.4.1(supports-color@8.1.1)
+      hardhat: 2.26.3(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.13.3(@swc/helpers@0.5.17))(@types/node@18.18.14)(typescript@5.9.2))(typescript@5.9.2)(utf-8-validate@5.0.10)
+      lodash.clonedeep: 4.5.0
+      picocolors: 1.1.1
+      semver: 6.3.1
+      table: 6.9.0
+      undici: 5.29.0
+    transitivePeerDependencies:
+      - supports-color
+
   '@nomicfoundation/solidity-analyzer-darwin-arm64@0.1.2':
     optional: true
 
@@ -9847,6 +9881,10 @@ snapshots:
   caniuse-lite@1.0.30001734: {}
 
   caseless@0.12.0: {}
+
+  cbor@8.1.0:
+    dependencies:
+      nofilter: 3.1.0
 
   chai@4.5.0:
     dependencies:
@@ -12294,6 +12332,8 @@ snapshots:
 
   lodash.camelcase@4.3.0: {}
 
+  lodash.clonedeep@4.5.0: {}
+
   lodash.isequal@4.5.0: {}
 
   lodash.memoize@4.1.2: {}
@@ -12595,6 +12635,8 @@ snapshots:
   node-int64@0.4.0: {}
 
   node-releases@2.0.19: {}
+
+  nofilter@3.1.0: {}
 
   normalize-package-data@2.5.0:
     dependencies:
