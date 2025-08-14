@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2025-08-14T18:12:13.885Z",
+  "lastUpdated": "2025-08-14T19:53:33.165Z",
   "networks": {
     "sepolia-testnet": {
       "network": "sepolia-testnet",
@@ -13,7 +13,10 @@
       "deployer": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
       "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
       "lzEndpoint": "0x6EDCE65403992e310A62460808c4b910D972f10f",
-      "tokenAddress": "0xDb13bdb169c32c96EEfcE35Bc6bD8DE07B8e4e66"
+      "tokenAddress": "0xDb13bdb169c32c96EEfcE35Bc6bD8DE07B8e4e66",
+      "crossChainManagerAddress": "0x1081564488BDd61f7D4D48849349Ae6854cB3f17",
+      "crossChainManagerImplementation": "0x65a6013CAC0305B80Da466565d10a2136596E518",
+      "owner": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80"
     },
     "holesky-testnet": {
       "network": "holesky-testnet",
@@ -26,7 +29,10 @@
       "deployer": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
       "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
       "lzEndpoint": "0x6EDCE65403992e310A62460808c4b910D972f10f",
-      "tokenAddress": "0x145e3E5fcf3e4F0aEaB2f37C3dc39c1160f9C41C"
+      "tokenAddress": "0x145e3E5fcf3e4F0aEaB2f37C3dc39c1160f9C41C",
+      "crossChainManagerAddress": "0x7fB2CCfaa4E2F5E5A4C9a254D0F3Ea5Acd8168B6",
+      "crossChainManagerImplementation": "0x508460014313Ce91A73993eA0840bdA3d195164b",
+      "owner": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80"
     },
     "ethereum": {
       "network": "ethereum",

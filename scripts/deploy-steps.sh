@@ -219,8 +219,14 @@ deploy_evm_contracts() {
     
     check_env
 
+    # Deploy AlphaOFT first
     pnpm hardhat lz:deploy --tags AlphaOFT
     print_success "AlphaOFT deployed (see deployments/AlphaOFT.json)"
+    
+    # Deploy AlphaTokenCrossChainManager
+    print_status "Deploying AlphaTokenCrossChainManager..."
+    pnpm hardhat lz:deploy --tags AlphaTokenCrossChainManager
+    print_success "AlphaTokenCrossChainManager deployed (see deployments.json)"
 }
 
 deploy_program() {
