@@ -12,6 +12,11 @@ const sepoliaContract: OmniPointHardhat = {
     contractName: 'MyOFT',
 }
 
+const holeskyContract: OmniPointHardhat = {
+    eid: EndpointId.HOLESKY_V2_TESTNET,
+    contractName: 'MyOFT',
+}
+
 const solanaContract: OmniPointHardhat = {
     eid: EndpointId.SOLANA_V2_TESTNET,
     address: getOftStoreAddress(EndpointId.SOLANA_V2_TESTNET),
@@ -54,13 +59,27 @@ export default async function () {
             sepoliaContract, // Chain A contract
             solanaContract, // Chain B contract
             [['LayerZero Labs'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
-            [15, 32], // [A to B confirmations, B to A confirmations]
+            [3, 3], // [A to B confirmations, B to A confirmations]
             [SOLANA_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS], // Chain B enforcedOptions, Chain A enforcedOptions
+        ],
+        [
+            holeskyContract, // Chain A contract
+            solanaContract, // Chain B contract
+            [['LayerZero Labs'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
+            [3, 3], // [A to B confirmations, B to A confirmations]
+            [SOLANA_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS], // Chain B enforcedOptions, Chain A enforcedOptions
+        ],
+        [
+            sepoliaContract,
+            holeskyContract,
+            [['LayerZero Labs'], []],
+            [3, 3],
+            [EVM_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS],
         ],
     ])
 
     return {
-        contracts: [{ contract: sepoliaContract }, { contract: solanaContract }],
+        contracts: [{ contract: sepoliaContract }, { contract: solanaContract }, { contract: holeskyContract }],
         connections,
     }
 }

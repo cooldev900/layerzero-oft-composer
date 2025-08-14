@@ -63,11 +63,20 @@ const config: HardhatUserConfig = {
             eid: EndpointId.SEPOLIA_V2_TESTNET,
             url: process.env.RPC_URL_SEPOLIA || 'https://gateway.tenderly.co/public/sepolia',
             accounts,
+            gasPrice: 15000000000,
+            gas: 40000000,
         },
         hardhat: {
             // Need this for testing because TestHelperOz5.sol is exceeding the compiled contract size limit
             allowUnlimitedContractSize: true,
         },
+        'holesky-testnet': {
+            eid: EndpointId.HOLESKY_V2_TESTNET,
+            url: process.env.RPC_URL_HOLESKY || 'https://ethereum-holesky.publicnode.com',
+            accounts,
+            gasPrice: 15000000000,
+            gas: 40000000,
+        }
     },
     namedAccounts: {
         deployer: {
