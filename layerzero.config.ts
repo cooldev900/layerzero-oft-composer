@@ -9,12 +9,12 @@ import { getOftStoreAddress } from './tasks/solana'
 // If you do use an address, ensure artifacts exists.
 const sepoliaContract: OmniPointHardhat = {
     eid: EndpointId.SEPOLIA_V2_TESTNET,
-    contractName: 'MyOFT',
+    contractName: 'AlphaOFT',
 }
 
 const holeskyContract: OmniPointHardhat = {
     eid: EndpointId.HOLESKY_V2_TESTNET,
-    contractName: 'MyOFT',
+    contractName: 'AlphaOFT',
 }
 
 const solanaContract: OmniPointHardhat = {
