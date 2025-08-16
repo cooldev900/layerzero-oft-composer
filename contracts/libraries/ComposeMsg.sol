@@ -8,15 +8,15 @@ pragma solidity ^0.8.22;
 library ComposeMsg {
     /// @notice Message types for compose operations
     enum MessageType {
-        CROSS_CHAIN_SEND,
-        BURNT
+        CROSS_CHAIN_SEND, // Send tokens to a recipient on a different chain
+        BURNT // Burn tokens on the source chain
     }
 
     /// @notice Structure for compose message data
     struct ComposeData {
-        address recipient;
-        MessageType messageType;
-        bytes additionalData;
+        address recipient; // The recipient address
+        MessageType messageType; // The type of message
+        bytes additionalData; // Additional data (e.g., amount for BURNT messages)
     }
 
     /**
