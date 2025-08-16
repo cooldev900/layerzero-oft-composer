@@ -269,3 +269,540 @@ CrossChainManager: 0x1081564488BDd61f7D4D48849349Ae6854cB3f17
 Transaction: 0x7014a2d8ab10cae2801e2a70e99d197656a77ee8c538b3abbfa467d45daa05e4
 Gas Used: 222589
 Native Fee: 0.000007183579627372 ETH
+
+===== update-networks-from-metadata @ 2025-08-15T13:37:04.018Z =====
+[2025-08-15T13:37:04.020Z] Started update-networks-from-metadata
+[2025-08-15T13:37:04.021Z] Processing network 'sepolia-testnet' (chainId=11155111)
+[2025-08-15T13:37:04.021Z] Processing network 'holesky-testnet' (chainId=17000)
+[2025-08-15T13:37:04.021Z] Processing network 'ethereum' (chainId=1)
+[2025-08-15T13:37:04.021Z] Processing network 'bsc' (chainId=56)
+[2025-08-15T13:37:04.021Z] Processing network 'polygon' (chainId=137)
+[2025-08-15T13:37:04.021Z] Processing network 'arbitrum' (chainId=42161)
+[2025-08-15T13:37:04.021Z] Processing network 'optimism' (chainId=10)
+[2025-08-15T13:37:04.021Z] Processing network 'base' (chainId=8453)
+[2025-08-15T13:37:04.022Z] Processing network 'avalanche' (chainId=43114)
+[2025-08-15T13:37:04.022Z] No changes; deployments.json already up-to-date
+--- deployments.json (after update) ---
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-08-14T19:53:33.165Z",
+  "networks": {
+    "sepolia-testnet": {
+      "network": "sepolia-testnet",
+      "chainId": "11155111",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x6EDCE65403992e310A62460808c4b910D972f10f",
+      "tokenAddress": "0xDb13bdb169c32c96EEfcE35Bc6bD8DE07B8e4e66",
+      "crossChainManagerAddress": "0x1081564488BDd61f7D4D48849349Ae6854cB3f17",
+      "crossChainManagerImplementation": "0x65a6013CAC0305B80Da466565d10a2136596E518",
+      "owner": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80"
+    },
+    "holesky-testnet": {
+      "network": "holesky-testnet",
+      "chainId": "17000",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x6EDCE65403992e310A62460808c4b910D972f10f",
+      "tokenAddress": "0x145e3E5fcf3e4F0aEaB2f37C3dc39c1160f9C41C",
+      "crossChainManagerAddress": "0x7fB2CCfaa4E2F5E5A4C9a254D0F3Ea5Acd8168B6",
+      "crossChainManagerImplementation": "0x508460014313Ce91A73993eA0840bdA3d195164b",
+      "owner": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80"
+    },
+    "ethereum": {
+      "network": "ethereum",
+      "chainId": "1",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x0000000000000000000000000000000000000000",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c"
+    },
+    "bsc": {
+      "network": "bsc",
+      "chainId": "56",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x0000000000000000000000000000000000000000",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c"
+    },
+    "polygon": {
+      "network": "polygon",
+      "chainId": "137",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x0000000000000000000000000000000000000000",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c"
+    },
+    "arbitrum": {
+      "network": "arbitrum",
+      "chainId": "42161",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x0000000000000000000000000000000000000000",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c"
+    },
+    "optimism": {
+      "network": "optimism",
+      "chainId": "10",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x0000000000000000000000000000000000000000",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c"
+    },
+    "base": {
+      "network": "base",
+      "chainId": "8453",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x0000000000000000000000000000000000000000",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c"
+    },
+    "avalanche": {
+      "network": "avalanche",
+      "chainId": "43114",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x0000000000000000000000000000000000000000",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c"
+    }
+  },
+  "metadata": {
+    "tokenName": "Elevate to Alpha",
+    "tokenSymbol": "E2A",
+    "tokenDescription": "Elevate to Alpha - The revolutionary token for Becoming Alpha",
+    "tokenWebsite": "https://token.balpha.co",
+    "tokenLogoURI": "https://blush-gigantic-magpie-335.mypinata.cloud/ipfs/bafkreia5ccfpaib6eiaqbo3gd7wdusudslvz3fo6ara62oqtdbxee5ldzi",
+    "tokenDecimals": 18,
+    "maxSupply": "100000000000",
+    "initialMaxSupply": "100000000000",
+    "globalSupplyAuthorityChain": 11155111
+  },
+  "chainIds": {
+    "testnet": {
+      "sepolia-testnet": 11155111,
+      "holesky-testnet": 17000
+    },
+    "mainnet": {
+      "ethereum": 1,
+      "bsc": 56,
+      "polygon": 137,
+      "arbitrum": 42161,
+      "optimism": 10,
+      "base": 8453,
+      "avalanche": 43114
+    }
+  },
+  "deploymentVersion": "v0.0.0",
+  "versionHistory": [
+    {
+      "version": "v0.0.0",
+      "timestamp": "2025-08-04T02:16:48.736Z",
+      "description": "Full deployment via full-deploy.sh"
+    }
+  ]
+}
+
+===== update-networks-from-metadata @ 2025-08-15T13:38:37.118Z =====
+[2025-08-15T13:38:37.121Z] Started update-networks-from-metadata
+[2025-08-15T13:38:37.122Z] Processing network 'sepolia-testnet' (chainId=11155111)
+[2025-08-15T13:38:37.123Z] Set lzEndpoint for 'sepolia-testnet' => 0x6EDCE65403992e310A62460808c4b910D972f10f
+[2025-08-15T13:38:37.123Z] Processing network 'holesky-testnet' (chainId=17000)
+[2025-08-15T13:38:37.123Z] Set lzEndpoint for 'holesky-testnet' => 0x6EDCE65403992e310A62460808c4b910D972f10f
+[2025-08-15T13:38:37.123Z] Processing network 'ethereum' (chainId=1)
+[2025-08-15T13:38:37.123Z] Set lzEndpoint for 'ethereum' => 0x1a44076050125825900e736c501f859c50fE728c
+[2025-08-15T13:38:37.124Z] Processing network 'bsc' (chainId=56)
+[2025-08-15T13:38:37.124Z] Set lzEndpoint for 'bsc' => 0x1a44076050125825900e736c501f859c50fE728c
+[2025-08-15T13:38:37.124Z] Processing network 'polygon' (chainId=137)
+[2025-08-15T13:38:37.124Z] Set lzEndpoint for 'polygon' => 0x1a44076050125825900e736c501f859c50fE728c
+[2025-08-15T13:38:37.124Z] Processing network 'arbitrum' (chainId=42161)
+[2025-08-15T13:38:37.125Z] Set lzEndpoint for 'arbitrum' => 0x1a44076050125825900e736c501f859c50fE728c
+[2025-08-15T13:38:37.125Z] Processing network 'optimism' (chainId=10)
+[2025-08-15T13:38:37.125Z] Set lzEndpoint for 'optimism' => 0x1a44076050125825900e736c501f859c50fE728c
+[2025-08-15T13:38:37.125Z] Processing network 'base' (chainId=8453)
+[2025-08-15T13:38:37.125Z] Set lzEndpoint for 'base' => 0x1a44076050125825900e736c501f859c50fE728c
+[2025-08-15T13:38:37.125Z] Processing network 'avalanche' (chainId=43114)
+[2025-08-15T13:38:37.125Z] Set lzEndpoint for 'avalanche' => 0x1a44076050125825900e736c501f859c50fE728c
+[2025-08-15T13:38:37.126Z] Updated deployments.json: processed=9, created=0, endpointsSet=9, chainIdUpdates=0, defaultsSet=0, totalChanges=9
+--- deployments.json (after update) ---
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-08-15T13:38:37.118Z",
+  "networks": {
+    "sepolia-testnet": {
+      "network": "sepolia-testnet",
+      "chainId": "11155111",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x6EDCE65403992e310A62460808c4b910D972f10f",
+      "tokenAddress": "0xDb13bdb169c32c96EEfcE35Bc6bD8DE07B8e4e66",
+      "crossChainManagerAddress": "0x1081564488BDd61f7D4D48849349Ae6854cB3f17",
+      "crossChainManagerImplementation": "0x65a6013CAC0305B80Da466565d10a2136596E518",
+      "owner": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "eid": 40161
+    },
+    "holesky-testnet": {
+      "network": "holesky-testnet",
+      "chainId": "17000",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x6EDCE65403992e310A62460808c4b910D972f10f",
+      "tokenAddress": "0x145e3E5fcf3e4F0aEaB2f37C3dc39c1160f9C41C",
+      "crossChainManagerAddress": "0x7fB2CCfaa4E2F5E5A4C9a254D0F3Ea5Acd8168B6",
+      "crossChainManagerImplementation": "0x508460014313Ce91A73993eA0840bdA3d195164b",
+      "owner": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "eid": 40217
+    },
+    "ethereum": {
+      "network": "ethereum",
+      "chainId": "1",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x0000000000000000000000000000000000000000",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c",
+      "eid": 30101
+    },
+    "bsc": {
+      "network": "bsc",
+      "chainId": "56",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x0000000000000000000000000000000000000000",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c",
+      "eid": 30102
+    },
+    "polygon": {
+      "network": "polygon",
+      "chainId": "137",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x0000000000000000000000000000000000000000",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c",
+      "eid": 30109
+    },
+    "arbitrum": {
+      "network": "arbitrum",
+      "chainId": "42161",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x0000000000000000000000000000000000000000",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c",
+      "eid": 30110
+    },
+    "optimism": {
+      "network": "optimism",
+      "chainId": "10",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x0000000000000000000000000000000000000000",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c",
+      "eid": 30111
+    },
+    "base": {
+      "network": "base",
+      "chainId": "8453",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x0000000000000000000000000000000000000000",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c",
+      "eid": 30184
+    },
+    "avalanche": {
+      "network": "avalanche",
+      "chainId": "43114",
+      "crossChainManager": "0x0000000000000000000000000000000000000000",
+      "transferRestrictions": "0x0000000000000000000000000000000000000000",
+      "securityManager": "0x0000000000000000000000000000000000000000",
+      "vestingIntegration": "0x0000000000000000000000000000000000000000",
+      "metadataManager": "0x0000000000000000000000000000000000000000",
+      "deployer": "0x0000000000000000000000000000000000000000",
+      "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c",
+      "eid": 30106
+    }
+  },
+  "metadata": {
+    "tokenName": "Elevate to Alpha",
+    "tokenSymbol": "E2A",
+    "tokenDescription": "Elevate to Alpha - The revolutionary token for Becoming Alpha",
+    "tokenWebsite": "https://token.balpha.co",
+    "tokenLogoURI": "https://blush-gigantic-magpie-335.mypinata.cloud/ipfs/bafkreia5ccfpaib6eiaqbo3gd7wdusudslvz3fo6ara62oqtdbxee5ldzi",
+    "tokenDecimals": 18,
+    "maxSupply": "100000000000",
+    "initialMaxSupply": "100000000000",
+    "globalSupplyAuthorityChain": 11155111
+  },
+  "chainIds": {
+    "testnet": {
+      "sepolia-testnet": 11155111,
+      "holesky-testnet": 17000
+    },
+    "mainnet": {
+      "ethereum": 1,
+      "bsc": 56,
+      "polygon": 137,
+      "arbitrum": 42161,
+      "optimism": 10,
+      "base": 8453,
+      "avalanche": 43114
+    }
+  },
+  "deploymentVersion": "v0.0.0",
+  "versionHistory": [
+    {
+      "version": "v0.0.0",
+      "timestamp": "2025-08-04T02:16:48.736Z",
+      "description": "Full deployment via full-deploy.sh"
+    }
+  ]
+}
+
+===== AlphaOFT deploy @ 2025-08-15T13:55:31.369Z =====
+Deployed AlphaOFT on sepolia-testnet
+Address: 0x18d7fB33A6EE9a5475c761c827c37b7042e19496
+TxHash: 0x43f331781dca96aabfb7b7bb48ad5e6828b596a9e9a5ecd0177b2a4ec670a452
+Deployer: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+
+===== AlphaOFT deploy @ 2025-08-15T13:55:34.882Z =====
+Deployed AlphaOFT on holesky-testnet
+Address: 0x9CC6d007EC485416ac887Fcd2c98543Ae6472274
+TxHash: 0x3f99c82485af107ba563744120dd4ddd30d7ad1f0f41accd7e049b51c9d7e24a
+Deployer: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+
+===== AlphaTokenCrossChainManager deployment @ 2025-08-15T13:56:10.327Z =====
+Network: sepolia-testnet
+Implementation Address: 0xBbD5196EA3b056fC914ada10A9aD610120B1386C
+Proxy Address: 0xeA9f029Fa7B6eC952446CCb740E86830DF39370C
+Implementation TxHash: 0x4ec734e60ac525bb29c1228be8c6df6bd952ac64bf9342565cf3a877cb9fe89e
+Proxy TxHash: 0x7845646c36d7eb9f90ce2882bf794bae75b1ff6b361dd80fb9133d76b1854e17
+Deployer: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+Initialization parameters:
+  - Endpoint: 0x6EDCE65403992e310A62460808c4b910D972f10f
+  - TrustedOFT: 0x18d7fB33A6EE9a5475c761c827c37b7042e19496
+  - Owner: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+
+===== AlphaTokenCrossChainManager deployment @ 2025-08-15T13:56:20.498Z =====
+Network: holesky-testnet
+Implementation Address: 0x06c053ba7A7c80c72995533DC0aF76Df7e50D22A
+Proxy Address: 0x3BB6c64B2f7b96d0b5A5c7d3e27b52e9b88a9ec2
+Implementation TxHash: 0x4f90f33fb7221f1c502d98e659d417833dad67e97424d659b9fc482417acd94e
+Proxy TxHash: 0xda481ecd2a85bbf5b8976a2f943bbae8ebc0fd03aecbd817f8c419368c6b7ad2
+Deployer: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+Initialization parameters:
+  - Endpoint: 0x6EDCE65403992e310A62460808c4b910D972f10f
+  - TrustedOFT: 0x9CC6d007EC485416ac887Fcd2c98543Ae6472274
+  - Owner: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+
+===== Alpha Token Mint @ 2025-08-16T17:31:06.3NZ =====
+Network: sepolia-testnet
+Contract: 0x18d7fB33A6EE9a5475c761c827c37b7042e19496
+Treasury: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+Amount: 100000000000 tokens (100 billion)
+Timestamp: Sat Aug 16 12:31:06 CDT 2025
+
+===== AlphaOFT deploy @ 2025-08-16T17:44:25.067Z =====
+Deployed AlphaOFT on holesky-testnet
+Address: 0x9CC6d007EC485416ac887Fcd2c98543Ae6472274
+TxHash: 0x3f99c82485af107ba563744120dd4ddd30d7ad1f0f41accd7e049b51c9d7e24a
+Deployer: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+
+===== AlphaOFT deploy @ 2025-08-16T17:44:30.263Z =====
+Deployed AlphaOFT on sepolia-testnet
+Address: 0x18d7fB33A6EE9a5475c761c827c37b7042e19496
+TxHash: 0x43f331781dca96aabfb7b7bb48ad5e6828b596a9e9a5ecd0177b2a4ec670a452
+Deployer: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+
+===== AlphaTokenCrossChainManager deployment @ 2025-08-16T17:44:46.463Z =====
+Network: sepolia-testnet
+Implementation Address: 0xBbD5196EA3b056fC914ada10A9aD610120B1386C
+Proxy Address: 0xeA9f029Fa7B6eC952446CCb740E86830DF39370C
+Implementation TxHash: 0x4ec734e60ac525bb29c1228be8c6df6bd952ac64bf9342565cf3a877cb9fe89e
+Proxy TxHash: 0x7845646c36d7eb9f90ce2882bf794bae75b1ff6b361dd80fb9133d76b1854e17
+Deployer: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+Initialization parameters:
+  - Endpoint: 0x6EDCE65403992e310A62460808c4b910D972f10f
+  - TrustedOFT: 0x18d7fB33A6EE9a5475c761c827c37b7042e19496
+  - Owner: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+
+===== AlphaTokenCrossChainManager deployment @ 2025-08-16T17:44:55.105Z =====
+Network: holesky-testnet
+Implementation Address: 0x06c053ba7A7c80c72995533DC0aF76Df7e50D22A
+Proxy Address: 0x3BB6c64B2f7b96d0b5A5c7d3e27b52e9b88a9ec2
+Implementation TxHash: 0x4f90f33fb7221f1c502d98e659d417833dad67e97424d659b9fc482417acd94e
+Proxy TxHash: 0xda481ecd2a85bbf5b8976a2f943bbae8ebc0fd03aecbd817f8c419368c6b7ad2
+Deployer: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+Initialization parameters:
+  - Endpoint: 0x6EDCE65403992e310A62460808c4b910D972f10f
+  - TrustedOFT: 0x9CC6d007EC485416ac887Fcd2c98543Ae6472274
+  - Owner: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+
+===== AlphaOFT deploy @ 2025-08-16T17:56:40.840Z =====
+Deployed AlphaOFT on holesky-testnet
+Address: 0x593fa10d95448824da1D74915CcdF315b5E358F8
+TxHash: 0x9ae0f55e36c9a28f199862045db2d6c48b9d27e8b832e54f4d8f440f8381473a
+Deployer: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+
+===== AlphaOFT deploy @ 2025-08-16T17:56:53.135Z =====
+Deployed AlphaOFT on sepolia-testnet
+Address: 0x323bfb6D2eD5D8Cc7F74e8c580E87dFA57719859
+TxHash: 0xa070d2dd1c7a491f92a1140dd06a9c7df96e3c24d07951c9f0d6a12eaf932635
+Deployer: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+
+===== AlphaTokenCrossChainManager deployment @ 2025-08-16T17:57:32.196Z =====
+Network: holesky-testnet
+Implementation Address: 0xA4d5f755C6d84869b6B55Cb46F80C426eda67a8e
+Proxy Address: 0x9a304D2c10c7E71376d4c9E9123C3AB1fb99870f
+Implementation TxHash: 0x8ac57db4ec51f3ec30917beab2bfed5221dc4811ccacbb10c4f0d28debe8aab2
+Proxy TxHash: 0x68920c4e47cf3e47462720b9dee66288aae2c222e49b35634cf5cff22bd090c5
+Deployer: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+Initialization parameters:
+  - Endpoint: 0x6EDCE65403992e310A62460808c4b910D972f10f
+  - TrustedOFT: 0x593fa10d95448824da1D74915CcdF315b5E358F8
+  - Owner: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+
+===== AlphaTokenCrossChainManager deployment @ 2025-08-16T17:57:35.037Z =====
+Network: sepolia-testnet
+Implementation Address: 0x1FFdD05ec331312982753786e4747448CF4cc4Fd
+Proxy Address: 0x65Acc935efa65D6e62082Dc9616Ef07d6a1062bf
+Implementation TxHash: 0xf92887431a1819843fd294ac215d0b3e97d5adb37e5304af7c985ac89a0e936c
+Proxy TxHash: 0xdbb239cf69bc33b8abb0f403a09946bdad04f43d607a9a6ec8bd7059cf520198
+Deployer: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+Initialization parameters:
+  - Endpoint: 0x6EDCE65403992e310A62460808c4b910D972f10f
+  - TrustedOFT: 0x323bfb6D2eD5D8Cc7F74e8c580E87dFA57719859
+  - Owner: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+
+===== Alpha Token Mint @ 2025-08-16T17:58:31.3NZ =====
+Network: sepolia-testnet
+Contract: 0x323bfb6D2eD5D8Cc7F74e8c580E87dFA57719859
+Treasury: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+Amount: 100000000000 tokens (100 billion)
+Timestamp: Sat Aug 16 12:58:31 CDT 2025
+
+===== Alpha Token Mint @ 2025-08-16T18:03:52.3NZ =====
+Network: sepolia-testnet
+Contract: 0x323bfb6D2eD5D8Cc7F74e8c580E87dFA57719859
+Treasury: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+Amount: 100000000000 tokens (100 billion)
+Timestamp: Sat Aug 16 13:03:52 CDT 2025
+
+===== Composed OFT Send @ 2025-08-16T18:24:17.241Z =====
+Source Network: sepolia-testnet
+Source EID: 40161
+Destination EID: 40217
+From: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+To: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+Amount: 1000
+Message Type: CROSS_CHAIN_SEND
+Pay in LZ Token: false
+Extra Options: 0x
+OFT Contract: 0x323bfb6D2eD5D8Cc7F74e8c580E87dFA57719859
+CrossChainManager: 0x65Acc935efa65D6e62082Dc9616Ef07d6a1062bf
+Transaction: 0xdaa99e344ea8367d088d00f7186902cb03ca26213f8ae89a04acf8d0e5cd8c89
+Gas Used: 313050
+Native Fee: 0.000007350874529228 ETH
+
+===== Composed OFT Send @ 2025-08-16T18:27:26.350Z =====
+Source Network: sepolia-testnet
+Source EID: 40161
+Destination EID: 40217
+From: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+To: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+Amount: 1000
+Message Type: CROSS_CHAIN_SEND
+Pay in LZ Token: false
+Extra Options: 0x
+OFT Contract: 0x323bfb6D2eD5D8Cc7F74e8c580E87dFA57719859
+CrossChainManager: 0x65Acc935efa65D6e62082Dc9616Ef07d6a1062bf
+Transaction: 0x104230e333c98d7fa1f666ec7c865d00d45df9db94a161553ea0b10012cba8d4
+Gas Used: 295950
+Native Fee: 0.000007350874529228 ETH
+LayerZero Scan: https://testnet.layerzeroscan.com/tx/0x104230e333c98d7fa1f666ec7c865d00d45df9db94a161553ea0b10012cba8d4
+
+===== Composed OFT Send @ 2025-08-16T18:37:51.201Z =====
+Source Network: sepolia-testnet
+Source EID: 40161
+Destination EID: 40217
+From: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+To: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+Amount: 1000
+Message Type: CROSS_CHAIN_SEND
+Pay in LZ Token: false
+Extra Options: 0x
+OFT Contract: 0x323bfb6D2eD5D8Cc7F74e8c580E87dFA57719859
+CrossChainManager: 0x65Acc935efa65D6e62082Dc9616Ef07d6a1062bf
+Transaction: 0xa7b33df8ce0353b7b5a8f8ce65f05ef278416e4cb673ca188c0e57dc15701f95
+Gas Used: 295950
+Native Fee: 0.000007590876209228 ETH
+LayerZero Scan: https://testnet.layerzeroscan.com/tx/0xa7b33df8ce0353b7b5a8f8ce65f05ef278416e4cb673ca188c0e57dc15701f95

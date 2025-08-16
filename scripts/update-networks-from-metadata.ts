@@ -20,7 +20,8 @@ interface NetworkEntry {
   transferRestrictions?: string
   securityManager?: string
   vestingIntegration?: string
-  metadataManager?: string
+  metadataManager?: string,
+  eid?: number,
 }
 
 interface DeploymentsFile {
@@ -116,7 +117,7 @@ function writeJson(filePath: string, data: unknown) {
 }
 
 // Find the endpointV2 address by matching chainIds against chainDetails.nativeChainId
-function findEndpointForChainId(root: MetadataRoot, targetChainId: number): string | undefined {
+function findEndpointForChainId(root: MetadataRoot, targetChainId: number): DeploymentEntry | undefined {
   for (const data of Object.values(root)) {
     const nativeId = data.chainDetails?.nativeChainId
     if (typeof nativeId === 'number' && nativeId === targetChainId) {
@@ -124,7 +125,7 @@ function findEndpointForChainId(root: MetadataRoot, targetChainId: number): stri
       // Prefer endpointV2
       for (const d of deployments) {
         const v2 = d.endpointV2?.address
-        if (typeof v2 === 'string' && v2.length > 0) return v2
+        if (typeof v2 === 'string' && v2.length > 0) return d
       }
     }
   }
@@ -183,7 +184,7 @@ function findEndpointForChainId(root: MetadataRoot, targetChainId: number): stri
       const chainId = group[networkName]
       processed++
       addLog(`Processing network '${networkName}' (chainId=${chainId})`)
-      const endpoint = findEndpointForChainId(metadata, chainId)
+      const deployment = findEndpointForChainId(metadata, chainId)
 
       // Ensure network entry exists
       const wasExisting = Boolean(deployments.networks[networkName])
@@ -222,12 +223,20 @@ function findEndpointForChainId(root: MetadataRoot, targetChainId: number): stri
       if (!existing.treasury) { existing.treasury = ZERO_ADDR; changed++; defaultsSetCount++; addLog(`Defaulted treasury => ${ZERO_ADDR}`) }
 
       // Set endpoint if changed or missing
-      if (endpoint && existing.lzEndpoint !== endpoint) {
-        existing.lzEndpoint = endpoint
+      if (deployment && existing.lzEndpoint !== deployment.endpointV2?.address) {
+        existing.lzEndpoint = deployment.endpointV2?.address
         changed++
         endpointSets++
-        console.log(`Set lzEndpoint for '${networkName}' (chainId=${chainId}) => ${endpoint}`)
-        addLog(`Set lzEndpoint for '${networkName}' => ${endpoint}`)
+        console.log(`Set lzEndpoint for '${networkName}' (chainId=${chainId}) => ${deployment.endpointV2?.address}`)
+        addLog(`Set lzEndpoint for '${networkName}' => ${deployment.endpointV2?.address}`)
+      }
+
+      if (deployment && existing.eid !== deployment.eid) {
+        existing.eid = typeof deployment.eid === 'number' ? deployment.eid : parseInt(String(deployment.eid))
+        changed++
+        endpointSets++
+        console.log(`Set lzEndpoint for '${networkName}' (chainId=${chainId}) => ${deployment.endpointV2?.address}`)
+        addLog(`Set lzEndpoint for '${networkName}' => ${deployment.endpointV2?.address}`)
       }
 
       deployments.networks[networkName] = existing

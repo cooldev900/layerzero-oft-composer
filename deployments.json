@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2025-08-14T19:53:33.165Z",
+  "lastUpdated": "2025-08-16T17:57:35.037Z",
   "networks": {
     "sepolia-testnet": {
       "network": "sepolia-testnet",
@@ -13,10 +13,11 @@
       "deployer": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
       "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
       "lzEndpoint": "0x6EDCE65403992e310A62460808c4b910D972f10f",
-      "tokenAddress": "0xDb13bdb169c32c96EEfcE35Bc6bD8DE07B8e4e66",
-      "crossChainManagerAddress": "0x1081564488BDd61f7D4D48849349Ae6854cB3f17",
-      "crossChainManagerImplementation": "0x65a6013CAC0305B80Da466565d10a2136596E518",
-      "owner": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80"
+      "tokenAddress": "0x323bfb6D2eD5D8Cc7F74e8c580E87dFA57719859",
+      "crossChainManagerAddress": "0x65Acc935efa65D6e62082Dc9616Ef07d6a1062bf",
+      "crossChainManagerImplementation": "0x1FFdD05ec331312982753786e4747448CF4cc4Fd",
+      "owner": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "eid": 40161
     },
     "holesky-testnet": {
       "network": "holesky-testnet",
@@ -29,10 +30,11 @@
       "deployer": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
       "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
       "lzEndpoint": "0x6EDCE65403992e310A62460808c4b910D972f10f",
-      "tokenAddress": "0x145e3E5fcf3e4F0aEaB2f37C3dc39c1160f9C41C",
-      "crossChainManagerAddress": "0x7fB2CCfaa4E2F5E5A4C9a254D0F3Ea5Acd8168B6",
-      "crossChainManagerImplementation": "0x508460014313Ce91A73993eA0840bdA3d195164b",
-      "owner": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80"
+      "tokenAddress": "0x593fa10d95448824da1D74915CcdF315b5E358F8",
+      "crossChainManagerAddress": "0x9a304D2c10c7E71376d4c9E9123C3AB1fb99870f",
+      "crossChainManagerImplementation": "0xA4d5f755C6d84869b6B55Cb46F80C426eda67a8e",
+      "owner": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
+      "eid": 40217
     },
     "ethereum": {
       "network": "ethereum",
@@ -44,7 +46,8 @@
       "metadataManager": "0x0000000000000000000000000000000000000000",
       "deployer": "0x0000000000000000000000000000000000000000",
       "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
-      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c"
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c",
+      "eid": 30101
     },
     "bsc": {
       "network": "bsc",
@@ -56,7 +59,8 @@
       "metadataManager": "0x0000000000000000000000000000000000000000",
       "deployer": "0x0000000000000000000000000000000000000000",
       "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
-      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c"
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c",
+      "eid": 30102
     },
     "polygon": {
       "network": "polygon",
@@ -68,7 +72,8 @@
       "metadataManager": "0x0000000000000000000000000000000000000000",
       "deployer": "0x0000000000000000000000000000000000000000",
       "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
-      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c"
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c",
+      "eid": 30109
     },
     "arbitrum": {
       "network": "arbitrum",
@@ -80,7 +85,8 @@
       "metadataManager": "0x0000000000000000000000000000000000000000",
       "deployer": "0x0000000000000000000000000000000000000000",
       "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
-      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c"
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c",
+      "eid": 30110
     },
     "optimism": {
       "network": "optimism",
@@ -92,7 +98,8 @@
       "metadataManager": "0x0000000000000000000000000000000000000000",
       "deployer": "0x0000000000000000000000000000000000000000",
       "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
-      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c"
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c",
+      "eid": 30111
     },
     "base": {
       "network": "base",
@@ -104,7 +111,8 @@
       "metadataManager": "0x0000000000000000000000000000000000000000",
       "deployer": "0x0000000000000000000000000000000000000000",
       "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
-      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c"
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c",
+      "eid": 30184
     },
     "avalanche": {
       "network": "avalanche",
@@ -116,7 +124,8 @@
       "metadataManager": "0x0000000000000000000000000000000000000000",
       "deployer": "0x0000000000000000000000000000000000000000",
       "treasury": "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80",
-      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c"
+      "lzEndpoint": "0x1a44076050125825900e736c501f859c50fE728c",
+      "eid": 30106
     }
   },
   "metadata": {

@@ -19,7 +19,7 @@ contract OptionsBuilderHelper {
     function buildComposeOptions(
         uint128 lzReceiveGas,
         uint128 lzComposeGas
-    ) external pure returns (bytes memory options) {
+    ) public pure returns (bytes memory options) {
         options = OptionsBuilder.newOptions()
             .addExecutorLzReceiveOption(lzReceiveGas, 0)        // Token transfer + compose queuing
             .addExecutorLzComposeOption(0, lzComposeGas, 0);    // Composer contract execution

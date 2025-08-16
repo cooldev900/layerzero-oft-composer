@@ -29,6 +29,19 @@ const EVM_ENFORCED_OPTIONS: OAppEnforcedOption[] = [
         gas: 80000,
         value: 0,
     },
+    {
+        msgType: 2,
+        optionType: ExecutorOptionType.LZ_RECEIVE,
+        gas: 250000,
+        value: 0,
+    },
+    {
+        msgType: 2,
+        optionType: ExecutorOptionType.COMPOSE,
+        index: 0,
+        gas: 150000,
+        value: 0,
+    },
 ]
 
 const CU_LIMIT = 200000 // This represents the CU limit for executing the `lz_receive` function on Solana.
@@ -47,6 +60,19 @@ const SOLANA_ENFORCED_OPTIONS: OAppEnforcedOption[] = [
         gas: CU_LIMIT,
         value: SPL_TOKEN_ACCOUNT_RENT_VALUE,
     },
+    {
+        msgType: 2,
+        optionType: ExecutorOptionType.LZ_RECEIVE,
+        gas: CU_LIMIT,
+        value: SPL_TOKEN_ACCOUNT_RENT_VALUE,
+    },
+    {
+        msgType: 2,
+        optionType: ExecutorOptionType.COMPOSE,
+        index: 0,
+        gas: 80000,
+        value: 0,
+    },
 ]
 
 // Learn about Message Execution Options: https://docs.layerzero.network/v2/developers/solana/oft/account#message-execution-options
@@ -59,21 +85,21 @@ export default async function () {
             sepoliaContract, // Chain A contract
             solanaContract, // Chain B contract
             [['LayerZero Labs'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
-            [3, 3], // [A to B confirmations, B to A confirmations]
+            [2, 2], // [A to B confirmations, B to A confirmations]
             [SOLANA_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS], // Chain B enforcedOptions, Chain A enforcedOptions
         ],
         [
             holeskyContract, // Chain A contract
             solanaContract, // Chain B contract
             [['LayerZero Labs'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
-            [3, 3], // [A to B confirmations, B to A confirmations]
+            [2, 2], // [A to B confirmations, B to A confirmations]
             [SOLANA_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS], // Chain B enforcedOptions, Chain A enforcedOptions
         ],
         [
             sepoliaContract,
             holeskyContract,
             [['LayerZero Labs'], []],
-            [3, 3],
+            [2, 2],
             [EVM_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS],
         ],
     ])
