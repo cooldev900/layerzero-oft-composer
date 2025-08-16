@@ -220,7 +220,7 @@ deploy_evm_contracts() {
     check_env
 
     # Deploy AlphaOFT first
-    pnpm hardhat lz:deploy --tags AlphaOFT
+    pnpm hardhat lz:deploy --reset --tags AlphaOFT
     print_success "AlphaOFT deployed (see deployments/AlphaOFT.json)"
     
     # Deploy AlphaTokenCrossChainManager
@@ -328,6 +328,91 @@ wire_connections() {
     print_success "Cross-chain connections wired successfully"
 }
 
+# Step 6: Setup Cross-Chain Managers
+setup_cross_chain_managers() {
+    print_status "Step 6: Setting up Cross-Chain Managers"
+    echo "==========================================="
+    
+    check_env
+    
+    if ! command_exists pnpm; then
+        print_error "pnpm not found. Please install pnpm"
+        exit 1
+    fi
+    
+    # Check if deployments.json exists
+    if [ ! -f "deployments.json" ]; then
+        print_error "deployments.json not found. Please ensure contracts are deployed first."
+        return 1
+    fi
+    
+    print_status "Reading deployment configuration..."
+    
+    # Get all EVM networks from deployments.json (excluding Solana)
+    local networks=($(jq -r '.networks | to_entries[] | select(.value.tokenAddress and .value.tokenAddress != "0x0000000000000000000000000000000000000000") | .key' deployments.json 2>/dev/null | grep -v solana || true))
+    local failed_networks=()
+    local successful_networks=()
+    
+    if [ ${#networks[@]} -eq 0 ]; then
+        print_warning "No EVM networks found with deployed tokens in deployments.json"
+        return 1
+    fi
+    
+    print_status "Setting up cross-chain managers for all networks..."
+    echo "Found networks: ${networks[*]}"
+    echo ""
+    
+    for network in "${networks[@]}"; do
+        echo "========================================"
+        print_status "Configuring cross-chain managers for $network..."
+        
+        # Run the cross-chain manager setup task (no parameters needed, reads from deployments.json)
+        print_status "Executing cross-chain manager setup for $network..."
+        if pnpm hardhat --network "$network" lz:oft:set-cross-chain-managers; then
+            print_success "Successfully configured cross-chain managers for $network"
+            successful_networks+=("$network")
+        else
+            print_error "Failed to configure cross-chain managers for $network"
+            failed_networks+=("$network")
+        fi
+        
+        echo ""
+        
+        # Add delay between networks to avoid rate limiting
+        local last_network="${networks[${#networks[@]}-1]}"
+        if [ ${#networks[@]} -gt 1 ] && [ "$network" != "$last_network" ]; then
+            print_status "Waiting 3 seconds before next network..."
+            sleep 3
+        fi
+    done
+    
+    echo "========================================"
+    print_status "Cross-Chain Manager Setup Summary:"
+    
+    local successful_count=${#successful_networks[@]}
+    local total_count=${#networks[@]}
+    
+    if [ $successful_count -gt 0 ]; then
+        print_success "Successful: $successful_count/$total_count networks (${successful_networks[*]})"
+    fi
+    
+    if [ ${#failed_networks[@]} -gt 0 ]; then
+        print_error "Failed networks: ${failed_networks[*]}"
+        print_warning "You may need to run setup manually for failed networks"
+        return 1
+    else
+        print_success "All networks configured successfully!"
+        
+        echo ""
+        print_status "Next steps:"
+        echo "1. Verify LayerZero peer configurations are set"
+        echo "2. Test cross-chain transfers using: pnpm hardhat --network <network> lz:oft:send-composed"
+        echo "3. Monitor cross-chain transactions on LayerZero scan"
+        
+        return 0
+    fi
+}
+
 # Step 7: Verify Deployment
 verify_deployment() {
     print_status "Step 7: Verifying Deployment"
@@ -421,6 +506,35 @@ test_cross_chain_message_from_sepolia_to_holesky() {
     print_success "Cross-chain message Sepolia -> Holesky completed successfully"
 }
 
+# Send composed cross-chain message from EVM Sepolia to EVM Holesky
+test_composed_message_from_sepolia_to_holesky() {
+    print_status "Step 8c: Testing Composed Cross-Chain Message from Sepolia to Holesky"
+    echo "================================================================="
+
+    check_env
+
+    if ! command_exists pnpm; then
+        print_error "pnpm not found. Please install pnpm"
+        exit 1
+    fi
+
+    print_status "Sending composed cross-chain message from EVM (Sepolia) to EVM (Holesky)..."
+    print_status "Source EID: 40161 (Sepolia)"
+    print_status "Destination EID: 40217 (Holesky)"
+    print_status "Amount: 1000 tokens"
+    print_status "Message Type: CROSS_CHAIN_SEND"
+    print_status "Recipient: 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80"
+
+    pnpm hardhat lz:oft:send-composed \
+        --src-eid 40161 \
+        --dst-eid 40217 \
+        --amount 1000 \
+        --recipient "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80" \
+        --message-type "CROSS_CHAIN_SEND"
+
+    print_success "Composed cross-chain message Sepolia -> Holesky completed successfully"
+}
+
 # Step 9: Debug Solana OFT Deployment
 debug_solana_deployment() {
     print_status "Step 9: Debugging Solana OFT Deployment"
@@ -465,7 +579,89 @@ debug_solana_deployment() {
     print_success "Solana OFT deployment debug completed"
 }
 
-# Step 10: Show Deployment Summary
+# Step 10: Mint Alpha Tokens to Treasury
+mint_alpha_tokens_sepolia() {
+    print_status "Step 10: Minting 100 Billion Alpha Tokens to Treasury on Sepolia"
+    echo "================================================================="
+
+    check_env
+
+    if ! command_exists pnpm; then
+        print_error "pnpm not found. Please install pnpm"
+        exit 1
+    fi
+
+    # Read treasury address from deployments.json
+    local treasury_address
+    if [ -f "deployments.json" ] && command_exists jq; then
+        treasury_address=$(jq -r '.networks["sepolia-testnet"].treasury // "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80"' deployments.json)
+    else
+        treasury_address="0x6E3a149F0972F9810B46D50C95e81A88b3f38E80"
+    fi
+
+    # 100 billion tokens
+    local amount="100000000000"
+
+    print_status "Minting Alpha tokens on Sepolia network..."
+    print_status "Treasury Address: $treasury_address"
+    print_status "Amount: $amount tokens (100 billion)"
+    print_status "Network: sepolia-testnet"
+
+    # Check if AlphaOFT deployment exists
+    if [ ! -f "deployments/sepolia-testnet/AlphaOFT.json" ]; then
+        print_error "AlphaOFT deployment not found on sepolia-testnet. Please deploy it first."
+        exit 1
+    fi
+
+    # Get AlphaOFT contract address
+    local alpha_oft_address
+    if command_exists jq; then
+        alpha_oft_address=$(jq -r '.address' "deployments/sepolia-testnet/AlphaOFT.json" 2>/dev/null || echo "")
+    fi
+
+    if [ -z "$alpha_oft_address" ] || [ "$alpha_oft_address" = "null" ]; then
+        print_error "Failed to get AlphaOFT contract address from deployment file"
+        exit 1
+    fi
+
+    print_status "AlphaOFT Contract: $alpha_oft_address"
+
+    # Execute the mint operation
+    print_status "Executing mint transaction..."
+    if pnpm hardhat --network sepolia-testnet lz:oft:mint \
+        --to "$treasury_address" \
+        --amount "$amount"; then
+        
+        print_success "Successfully minted $amount Alpha tokens to treasury address: $treasury_address"
+        
+        # Log to history
+        local historyLogPath="deployments-history.log"
+        local logEntry=$(cat << EOF
+
+===== Alpha Token Mint @ $(date -u +"%Y-%m-%dT%H:%M:%S.%3NZ") =====
+Network: sepolia-testnet
+Contract: $alpha_oft_address
+Treasury: $treasury_address
+Amount: $amount tokens (100 billion)
+Timestamp: $(date)
+EOF
+)
+        echo "$logEntry" >> "$historyLogPath"
+        print_status "Logged mint operation to $historyLogPath"
+        
+        echo ""
+        print_status "Next steps:"
+        echo "1. Verify the mint transaction on Sepolia etherscan"
+        echo "2. Check treasury balance using: pnpm hardhat --network sepolia-testnet lz:oft:balance --address $treasury_address"
+        echo "3. The tokens are now ready for cross-chain transfers"
+        
+    else
+        print_error "Failed to mint Alpha tokens"
+        exit 1
+    fi
+}
+
+# Step 11: Show Deployment Summary
 show_summary() {
     print_status "Configuration Summary"
     npx hardhat lz:oapp:config:get --oapp-config layerzero.config.ts
@@ -552,12 +748,12 @@ full_process() {
     }
     
     # Execute all steps in sequence
-    execute_step "Build Solidity" build_solidity
     execute_step "Build Program" build_program
     execute_step "Deploy Program" deploy_program
     execute_step "Create OFT Store" create_oft_store
     execute_step "Initialize Solana Config" init_solana_config
     execute_step "Wire Connections" wire_connections
+    execute_step "Setup Cross-Chain Managers" setup_cross_chain_managers
     execute_step "Verify Deployment" verify_deployment
     execute_step "Show Summary" show_summary
     
@@ -591,11 +787,14 @@ show_help() {
     echo "  create_oft_store   Create the Solana OFT store"
     echo "  init_solana_config Initialize Solana configuration"
     echo "  wire_connections   Wire cross-chain connections"
+    echo "  setup_cross_chain_managers Setup cross-chain manager addresses for all networks"
     echo "  check_and_set_fees Check and set chain transfer fees"
     echo "  verify_deployment  Verify deployment files"
     echo "  debug_solana_deployment Debug Solana OFT deployment and peer configurations"
     echo "  test_cross_chain_message Test cross-chain message from EVM to Solana"
-    echo "  crosss_chain_message_from_sepolia_to_holesky Test cross-chain message from Sepolia to Holesky"
+    echo "  test_cross_chain_message_from_sepolia_to_holesky Test cross-chain message from Sepolia to Holesky"
+    echo "  test_composed_message_from_sepolia_to_holesky Test composed cross-chain message from Sepolia to Holesky"
+    echo "  mint_alpha_tokens_sepolia Mint 100 billion Alpha tokens to treasury on Sepolia"
     echo "  show_summary       Show deployment summary"
     echo "  full_process       Complete deployment workflow (all steps)"
     echo "  help              Show this help message"
@@ -618,6 +817,8 @@ show_help() {
     echo "  $0 debug_solana_deployment"
     echo "  $0 test_cross_chain_message_to_solana"
     echo "  $0 test_cross_chain_message_from_sepolia_to_holesky"
+    echo "  $0 test_composed_message_from_sepolia_to_holesky"
+    echo "  $0 mint_alpha_tokens_sepolia"
 }
 
 # Main function
@@ -652,6 +853,9 @@ main() {
         "wire_connections")
             wire_connections
             ;;
+        "setup_cross_chain_managers")
+            setup_cross_chain_managers
+            ;;
         "check_and_set_fees")
             check_and_set_fees
             ;;
@@ -666,6 +870,12 @@ main() {
             ;;
         "test_cross_chain_message_from_sepolia_to_holesky")
             test_cross_chain_message_from_sepolia_to_holesky
+            ;;
+        "test_composed_message_from_sepolia_to_holesky")
+            test_composed_message_from_sepolia_to_holesky
+            ;;
+        "mint_alpha_tokens_sepolia")
+            mint_alpha_tokens_sepolia
             ;;
         "show_summary")
             show_summary

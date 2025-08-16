@@ -2,30 +2,50 @@ import { task, types } from 'hardhat/config'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import fs from 'fs'
 import path from 'path'
+import { createGetHreByEid } from '@layerzerolabs/devtools-evm-hardhat'
+import { ChainType, endpointIdToChainType, endpointIdToNetwork } from '@layerzerolabs/lz-definitions'
+import { getLayerZeroScanLink } from '../solana'
 
 task('lz:oft:send-composed', 'Send OFT tokens with composed message')
+    .addParam('srcEid', 'Source endpoint ID', undefined, types.int)
     .addParam('dstEid', 'Destination endpoint ID', undefined, types.int)
     .addParam('amount', 'Amount to send (in token units)', undefined, types.string)
     .addOptionalParam('recipient', 'Recipient address', '0x6E3a149F0972F9810B46D50C95e81A88b3f38E80', types.string)
     .addOptionalParam('messageType', 'Message type (CROSS_CHAIN_SEND or BURNT)', 'CROSS_CHAIN_SEND', types.string)
-    .addOptionalParam('burntAmount', 'Amount that was burnt (only for BURNT message type)', undefined, types.string)
+    .addOptionalParam('payInLzToken', 'Pay fees in LZ tokens', false, types.boolean)
+    .addOptionalParam('extraOptions', 'Extra LayerZero options (hex)', '0x', types.string)
     .setAction(async (taskArgs, hre: HardhatRuntimeEnvironment) => {
-        const { ethers, getNamedAccounts, network } = hre
+        const { srcEid, dstEid, amount, recipient, messageType, payInLzToken, extraOptions } = taskArgs
+
+        // Validate that srcEid is an EVM chain
+        if (endpointIdToChainType(srcEid) !== ChainType.EVM) {
+            throw new Error(`Source EID ${srcEid} (${endpointIdToNetwork(srcEid)}) is not an EVM chain. This task only supports EVM source chains.`)
+        }
+
+        // Get HRE for the source endpoint ID
+        const getHreByEid = createGetHreByEid(hre)
+        let srcEidHre: HardhatRuntimeEnvironment
+        try {
+            srcEidHre = await getHreByEid(srcEid)
+        } catch (error) {
+            throw new Error(`Failed to get HRE for source EID ${srcEid} (${endpointIdToNetwork(srcEid)}): ${error}`)
+        }
+
+        // Use the source HRE for all operations
+        const { ethers, getNamedAccounts, network } = srcEidHre
         const { deployer } = await getNamedAccounts()
-        
-        const { dstEid, amount, recipient, messageType, burntAmount } = taskArgs
 
         console.log(`\n🚀 Sending composed OFT message on ${network.name}`)
         console.log(`From: ${deployer}`)
         console.log(`To: ${recipient}`)
         console.log(`Amount: ${amount}`)
+        console.log(`Source EID: ${srcEid}`)
         console.log(`Destination EID: ${dstEid}`)
         console.log(`Message Type: ${messageType}`)
-        if (burntAmount) {
-            console.log(`Burnt Amount: ${burntAmount}`)
-        }
+        console.log(`Pay in LZ Token: ${payInLzToken}`)
+        console.log(`Extra Options: ${extraOptions}`)
 
-        // Get signer
+        // Get signer from the source HRE
         const signer = await ethers.getNamedSigner('deployer')
 
         // Read deployments.json to get contract addresses
@@ -62,7 +82,7 @@ task('lz:oft:send-composed', 'Send OFT tokens with composed message')
         // Fallback to hardhat deployments
         if (!oftAddress) {
             try {
-                const oftDeployment = await hre.deployments.get('AlphaOFT')
+                const oftDeployment = await srcEidHre.deployments.get('AlphaOFT')
                 oftAddress = oftDeployment.address
                 console.log(`Using AlphaOFT from hardhat deployments: ${oftAddress}`)
             } catch (error) {
@@ -72,7 +92,7 @@ task('lz:oft:send-composed', 'Send OFT tokens with composed message')
 
         if (!crossChainManagerAddress) {
             try {
-                const managerDeployment = await hre.deployments.get('AlphaTokenCrossChainManager')
+                const managerDeployment = await srcEidHre.deployments.get('AlphaTokenCrossChainManager')
                 crossChainManagerAddress = managerDeployment.address
                 console.log(`Using AlphaTokenCrossChainManager from hardhat deployments: ${crossChainManagerAddress}`)
             } catch (error) {
@@ -81,8 +101,7 @@ task('lz:oft:send-composed', 'Send OFT tokens with composed message')
         }
 
         // Get contract instances
-        const oft = await ethers.getContractAt('AlphaOFT', oftAddress!, signer)
-        const composeMsg = await ethers.getContractAt('ComposeMsg', ethers.constants.AddressZero) // Library, no deployment needed
+        const oft = await ethers.getContractAt('AlphaOFT', oftAddress!)
 
         // Get token decimals and parse amount
         const decimals = await oft.decimals()
@@ -99,61 +118,66 @@ task('lz:oft:send-composed', 'Send OFT tokens with composed message')
         }
         console.log(`  Sender balance: ${ethers.utils.formatUnits(balance, decimals)}`)
 
-        // For testing, let's use an empty compose message
-        const composeData = '0x'
+        // Transfer tokens from caller to contract
+        console.log(`\n🔄 Transferring tokens from caller to contract...`)
+        const transferTx = await oft.transfer(oftAddress!, amountLD)
+        const transferReceipt = await transferTx.wait()
+        console.log(`  ✅ Transfer transaction confirmed: ${transferReceipt.transactionHash}`)
+        console.log(`  📝 Transferred ${amount} tokens to contract`)
         
-        console.log(`\n📝 Using empty compose message for testing`)
+        // Verify contract now has the tokens
+        const contractBalance = await oft.balanceOf(oftAddress!)
+        console.log(`  🏦 Contract balance after transfer: ${ethers.utils.formatUnits(contractBalance, decimals)}`)
 
-        // Build LayerZero options for compose execution
-        console.log(`\n🔧 Building LayerZero options...`)
-        
-        // For now, let's use empty options to test basic functionality
-        // TODO: Implement proper OptionsBuilder pattern
-        const finalOptions = '0x'
-        
-        console.log(`  Using empty options for now (testing basic functionality)`)
-        console.log(`  Options length: ${finalOptions.length}`)
-
-        // Prepare send parameters
-        const sendParam = {
-            dstEid: dstEid,
-            to: ethers.utils.zeroPad(recipient, 32), // Send directly to recipient for now (testing)
-            amountLD: amountLD,
-            minAmountLD: amountLD, // No slippage for this example
-            extraOptions: finalOptions, // LayerZero options for compose execution
-            composeMsg: composeData, // Our composed message
-            oftCmd: '0x' // No OFT command
+        // Convert message type string to enum value
+        let messageTypeValue: number
+        if (messageType === 'CROSS_CHAIN_SEND') {
+            messageTypeValue = 0 // ComposeMsg.MessageType.CROSS_CHAIN_SEND
+        } else if (messageType === 'BURNT') {
+            messageTypeValue = 1 // ComposeMsg.MessageType.BURNT
+        } else {
+            throw new Error(`Invalid message type: ${messageType}. Must be CROSS_CHAIN_SEND or BURNT`)
         }
 
-        console.log(`\n🔧 Send parameters:`)
-        console.log(`  dstEid: ${sendParam.dstEid}`)
-        console.log(`  to: ${sendParam.to}`)
-        console.log(`  amountLD: ${sendParam.amountLD.toString()}`)
-        console.log(`  extraOptions length: ${finalOptions.length}`)
-        console.log(`  composeMsg length: ${composeData.length}`)
+        console.log(`\n📝 Using message type: ${messageType} (${messageTypeValue})`)
+        console.log(`  Extra options: ${extraOptions}`)
+        console.log(`  Pay in LZ token: ${payInLzToken}`)
 
         // Quote the send operation
         console.log(`\n💰 Quoting send operation...`)
-        const quote = await oft.quoteSend(sendParam, false) // false for lzTokenFee
+        const quote = await oft.quoteSendComposed(
+            recipient,
+            amountLD,
+            dstEid,
+            messageTypeValue,
+            payInLzToken,
+            extraOptions
+        )
         const nativeFee = quote.nativeFee
         const lzTokenFee = quote.lzTokenFee
 
         console.log(`  Native fee: ${ethers.utils.formatEther(nativeFee)} ETH`)
         console.log(`  LZ token fee: ${lzTokenFee.toString()}`)
 
-        // Check if user has enough ETH for gas
-        const ethBalance = await signer.getBalance()
-        if (ethBalance.lt(nativeFee)) {
-            throw new Error(`Insufficient ETH for gas. Have: ${ethers.utils.formatEther(ethBalance)} ETH, Need: ${ethers.utils.formatEther(nativeFee)} ETH`)
+        // Check if user has enough ETH for gas (only if not paying in LZ tokens)
+        if (!payInLzToken) {
+            const ethBalance = await ethers.provider.getBalance(signer.address)
+            if (ethers.BigNumber.from(ethBalance).lt(nativeFee)) {
+                throw new Error(`Insufficient ETH for gas. Have: ${ethers.utils.formatEther(ethBalance)} ETH, Need: ${ethers.utils.formatEther(nativeFee)} ETH`)
+            }
         }
 
         // Send the transaction
         console.log(`\n🚀 Sending composed message...`)
-        const tx = await oft.send(
-            sendParam,
-            { nativeFee: nativeFee, lzTokenFee: lzTokenFee },
-            signer.address, // refund address
-            { value: nativeFee }
+        const txValue = payInLzToken ? 0 : nativeFee
+        const tx = await oft.connect(signer as any).sendComposed(
+            recipient,
+            amountLD,
+            dstEid,
+            messageTypeValue,
+            payInLzToken,
+            extraOptions,
+            { value: txValue }
         )
 
         console.log(`📤 Transaction sent: ${tx.hash}`)
@@ -163,9 +187,19 @@ task('lz:oft:send-composed', 'Send OFT tokens with composed message')
         console.log(`✅ Transaction confirmed in block ${receipt.blockNumber}`)
         console.log(`   Gas used: ${receipt.gasUsed.toString()}`)
 
+        // Generate LayerZero scan link
+        const txHash = receipt.transactionHash
+        const isTestnet = srcEid >= 40_000 && srcEid < 50_000
+        const scanLink = getLayerZeroScanLink(txHash, isTestnet)
+        
+        console.log(`\n🔗 Transaction Links:`)
+        console.log(`   Transaction Hash: ${txHash}`)
+        console.log(`   LayerZero Scan: ${scanLink}`)
+        console.log(`   📊 Track your cross-chain transaction: ${scanLink}`)
+
         // Parse events to show what happened
         try {
-            const events = receipt.logs.map(log => {
+            const events = receipt.logs.map((log: any) => {
                 try {
                     return oft.interface.parseLog(log)
                 } catch {
@@ -174,7 +208,7 @@ task('lz:oft:send-composed', 'Send OFT tokens with composed message')
             }).filter(Boolean)
 
             console.log(`\n📋 Events emitted:`)
-            events.forEach((event, index) => {
+            events.forEach((event: any, index: number) => {
                 if (event) {
                     console.log(`  ${index + 1}. ${event.name}`)
                     if (event.name === 'OFTSent') {
@@ -183,6 +217,10 @@ task('lz:oft:send-composed', 'Send OFT tokens with composed message')
                         console.log(`     - from: ${event.args.from}`)
                         console.log(`     - amountSentLD: ${ethers.utils.formatUnits(event.args.amountSentLD, decimals)}`)
                         console.log(`     - amountReceivedLD: ${ethers.utils.formatUnits(event.args.amountReceivedLD, decimals)}`)
+                    } else if (event.name === 'CrossChainSendInitiated') {
+                        console.log(`     - recipient: ${event.args.recipient}`)
+                        console.log(`     - amount: ${ethers.utils.formatUnits(event.args.amount, decimals)}`)
+                        console.log(`     - dstEid: ${event.args.dstEid}`)
                     }
                 }
             })
@@ -195,18 +233,21 @@ task('lz:oft:send-composed', 'Send OFT tokens with composed message')
             const historyLogPath = path.join(rootDir, 'deployments-history.log')
             const logEntry = [
                 `\n===== Composed OFT Send @ ${new Date().toISOString()} =====`,
-                `Network: ${network.name}`,
+                `Source Network: ${network.name}`,
+                `Source EID: ${srcEid}`,
+                `Destination EID: ${dstEid}`,
                 `From: ${signer.address}`,
                 `To: ${recipient}`,
                 `Amount: ${amount}`,
-                `Destination EID: ${dstEid}`,
                 `Message Type: ${messageType}`,
-                burntAmount ? `Burnt Amount: ${burntAmount}` : undefined,
+                `Pay in LZ Token: ${payInLzToken}`,
+                `Extra Options: ${extraOptions}`,
                 `OFT Contract: ${oftAddress}`,
                 `CrossChainManager: ${crossChainManagerAddress}`,
-                `Transaction: ${tx.hash}`,
+                `Transaction: ${txHash}`,
                 `Gas Used: ${receipt.gasUsed.toString()}`,
                 `Native Fee: ${ethers.utils.formatEther(nativeFee)} ETH`,
+                `LayerZero Scan: ${scanLink}`,
             ].filter(Boolean).join('\n')
 
             fs.appendFileSync(historyLogPath, logEntry + '\n')
