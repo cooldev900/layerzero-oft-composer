@@ -14,15 +14,25 @@ This directory contains comprehensive bash scripts for deploying and managing So
 **Available Commands:**
 ```bash
 build_program      # Step 1: Build the Solana OFT program
-deploy_program     # Step 2: Deploy the Solana OFT program
+deploy_program     # Step 2: Deploy Solana OFT program and EVM AlphaOFT
 create_oft_store   # Step 3: Create the Solana OFT store
 init_solana_config # Step 4: Initialize Solana configuration
 wire_connections   # Step 5: Wire cross-chain connections
-check_and_set_fees # Step 6: Check and set chain transfer fees
-check_solana_fees  # Step 6b: Check Solana to EVM chain transfer fees
-set_solana_fees    # Step 6c: Set Solana to EVM chain transfer fees
+setup_cross_chain_managers # Step 6: Setup cross-chain manager addresses for all networks
 verify_deployment  # Step 7: Verify deployment files
-show_summary       # Step 8: Show deployment summary
+
+# Token Management
+mint_alpha_tokens_sepolia # Mint 100 billion Alpha tokens to treasury on Sepolia
+transfer_tokens_treasury_to_owner # Transfer tokens from treasury to owner for cross-chain operations
+
+# Testing Cross-Chain Transfers
+test_cross_chain_message_to_solana # Test standard OFT: Sepolia -> Solana (amount=1)
+test_cross_chain_message_from_sepolia_to_holesky # Test standard OFT: Sepolia -> Holesky (amount=1)
+test_composed_message_from_sepolia_to_holesky # Test composed message: Sepolia -> Holesky (amount=1000)
+
+# Utilities
+debug_solana_deployment # Debug Solana OFT deployment and peer configurations
+show_summary       # Show deployment summary
 full_process       # Complete deployment workflow (all steps + logging)
 help               # Show help message
 ```
@@ -82,11 +92,12 @@ deploy_program     # Step 2: Deploy the Solana OFT program
 create_oft_store   # Step 3: Create the Solana OFT store
 init_solana_config # Step 4: Initialize Solana configuration
 wire_connections   # Step 5: Wire cross-chain connections
-check_and_set_fees # Step 6: Check and set chain transfer fees
-check_solana_fees  # Step 6b: Check Solana to EVM chain transfer fees
-set_solana_fees    # Step 6c: Set Solana to EVM chain transfer fees
-verify_deployment  # Step 7: Verify deployment files
-show_summary       # Step 8: Show deployment summary
+setup_cross_chain_managers # Step 6: Setup cross-chain manager addresses for all networks
+check_and_set_fees # Step 7: Check and set chain transfer fees
+check_solana_fees  # Step 7b: Check Solana to EVM chain transfer fees
+set_solana_fees    # Step 7c: Set Solana to EVM chain transfer fees
+verify_deployment  # Step 8: Verify deployment files
+show_summary       # Step 9: Show deployment summary
 full_process       # Complete deployment workflow (all steps + logging)
 help               # Show help message
 ```
@@ -110,6 +121,7 @@ help               # Show help message
 ```
 
 ---
+
 
 ### ⚙️ `setup-env.sh` - Environment Setup and Validation
 **Environment configuration and validation tools**
@@ -259,12 +271,57 @@ TOKEN_SYMBOL=MOFT
 # 6. Wire cross-chain connections
 ./scripts/deploy-steps.sh wire_connections
 
-# 7. Verify deployment
+# 7. Setup cross-chain managers
+./scripts/deploy-steps.sh setup_cross_chain_managers
+
+# 8. Verify deployment
 ./scripts/deploy-steps.sh verify_deployment
 
-# 8. Show summary
+# 9. Show summary
 ./scripts/deploy-steps.sh show_summary
 ```
+
+---
+
+## 🔗 Cross-Chain Manager Configuration
+
+The deployment process includes setting up cross-chain manager addresses for each network. This is handled automatically in the deployment workflow or can be run manually.
+
+### Automatic Setup (Recommended)
+Cross-chain managers are configured automatically during the full deployment process:
+
+```bash
+# Included in full process
+./scripts/deploy-steps.sh full_process
+
+# Or run individually after wire_connections
+./scripts/deploy-steps.sh setup_cross_chain_managers
+```
+
+### Manual Setup
+You can also configure cross-chain managers manually for specific networks:
+
+```bash
+# Setup managers for current network
+pnpm hardhat --network sepolia-testnet lz:oft:set-cross-chain-managers
+
+# Preview changes without executing
+pnpm hardhat --network sepolia-testnet lz:oft:set-cross-chain-managers --dry-run true
+```
+
+### Features
+- ✅ Reads cross-chain manager addresses from `deployments.json` automatically
+- ✅ Maps network names to LayerZero endpoint IDs automatically
+- ✅ Sets up cross-chain managers for all destination networks
+- ✅ Comprehensive error handling and validation
+- ✅ Progress tracking and colored output
+
+### Networks Supported
+- `sepolia-testnet` (EID: 40161)
+- `holesky-testnet` (EID: 40217)
+- `ethereum` (EID: 30101)
+- `bsc` (EID: 30102)
+- And more...
 
 ---
 
@@ -525,6 +582,65 @@ solana address-lookup-table get 9thqPdbR27A1yLWw2spwJLySemiGMXxPnEvfmXVk4KuK --u
 - Performance timing and monitoring
 
 ---
+
+## 🔧 Available Hardhat Tasks
+
+In addition to the automated scripts, several Hardhat tasks are available for manual operations:
+
+### Token Management Tasks
+
+```bash
+# Mint AlphaOFT tokens to an address
+pnpm hardhat --network sepolia-testnet lz:oft:mint --to <ADDRESS> --amount <AMOUNT>
+
+# Check token balance for an address
+pnpm hardhat --network sepolia-testnet lz:oft:balance --address <ADDRESS>
+
+# Transfer tokens between addresses (requires owner privileges)
+pnpm hardhat --network sepolia-testnet lz:oft:transfer --from <FROM_ADDRESS> --to <TO_ADDRESS> --amount <AMOUNT>
+```
+
+### Cross-Chain Messaging Tasks
+
+```bash
+# Standard OFT send
+pnpm hardhat lz:oft:send --src-eid <SRC_EID> --dst-eid <DST_EID> --to <RECIPIENT> --amount <AMOUNT>
+
+# Composed cross-chain message send
+pnpm hardhat lz:oft:send-composed \
+  --src-eid <SRC_EID> \
+  --dst-eid <DST_EID> \
+  --amount <AMOUNT> \
+  --recipient <RECIPIENT> \
+  --message-type <MESSAGE_TYPE> \
+  [--pay-in-lz-token] \
+  [--extra-options <HEX_OPTIONS>]
+```
+
+### Configuration Tasks
+
+```bash
+# Setup cross-chain managers for all networks
+pnpm hardhat --network <NETWORK> lz:oft:set-cross-chain-managers
+
+# Deploy AlphaTokenCrossChainManager
+pnpm hardhat --network <NETWORK> deploy --tags AlphaTokenCrossChainManager
+
+# Wire LayerZero connections
+pnpm hardhat lz:oapp:wire --oapp-config layerzero.config.ts
+```
+
+### Example Usage
+
+```bash
+# Complete token setup workflow
+pnpm hardhat --network sepolia-testnet lz:oft:mint --to 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80 --amount 100000000000
+pnpm hardhat --network sepolia-testnet lz:oft:balance --address 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80
+pnpm hardhat --network sepolia-testnet lz:oft:transfer --from 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80 --to 0x323bfb6D2eD5D8Cc7F74e8c580E87dFA57719859 --amount 1000000000
+
+# Send composed cross-chain message
+pnpm hardhat lz:oft:send-composed --src-eid 40161 --dst-eid 40217 --amount 1000 --recipient "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80" --message-type "CROSS_CHAIN_SEND"
+```
 
 ## 🔗 Related Documentation
 

@@ -288,27 +288,114 @@ Run the wiring task:
 pnpm hardhat lz:oapp:wire --oapp-config layerzero.config.ts
 ```
 
+## Token Management
+
+After deployment, you'll need to manage token minting and distribution for cross-chain operations.
+
+### Mint Alpha Tokens
+
+Mint 100 billion Alpha tokens to the treasury address on Sepolia:
+
+```bash
+./scripts/deploy-steps.sh mint_alpha_tokens_sepolia
+```
+
+Or manually:
+
+```bash
+pnpm hardhat --network sepolia-testnet lz:oft:mint --to 0x6E3a149F0972F9810B46D50C95e81A88b3f38E80 --amount 100000000000
+```
+
+### Check Token Balances
+
+Check token balances for any address:
+
+```bash
+pnpm hardhat --network sepolia-testnet lz:oft:balance --address <ADDRESS>
+```
+
+### Transfer Tokens
+
+Transfer tokens from treasury to contract owner for cross-chain operations:
+
+```bash
+./scripts/deploy-steps.sh transfer_tokens_treasury_to_owner
+```
+
+Or manually:
+
+```bash
+pnpm hardhat --network sepolia-testnet lz:oft:transfer --from <TREASURY_ADDRESS> --to <OWNER_ADDRESS> --amount 1000000000
+```
+
 ## Sending OFTs
 
-Send From 1 OFT from **Solana Devnet** to **Ethereum Sepolia**
+### Standard OFT Transfers
+
+Send 1 OFT from **Solana Devnet** to **Ethereum Sepolia**:
 
 ```bash
-npx hardhat lz:oft:send --src-eid 40168 --dst-eid 40161 --to <EVM_ADDRESS>  --amount 1
+npx hardhat lz:oft:send --src-eid 40168 --dst-eid 40161 --to <EVM_ADDRESS> --amount 1
 ```
 
-> :information_source: `40168` and `40161` are the Endpoint IDs of Solana Devnet and Ethereum Sepolia respectively. View the list of chains and their Endpoint IDs on the [Deployed Endpoints](https://docs.layerzero.network/v2/deployments/deployed-contracts) page.
-
-Send 1 OFT From **Ethereum Sepolia** to **Solana Devnet**
+Send 1 OFT from **Ethereum Sepolia** to **Solana Devnet**:
 
 ```bash
-npx hardhat lz:oft:send --src-eid 40161 --dst-eid 40168 --to <SOLANA_ADDRESS>  --amount 1
+npx hardhat lz:oft:send --src-eid 40161 --dst-eid 40168 --to <SOLANA_ADDRESS> --amount 1
 ```
 
-Upon a successful send, the script will provide you with the link to the message on LayerZero Scan.
+### Composed Cross-Chain Messages
 
-Once the message is delivered, you will be able to click on the destination transaction hash to verify that the OFT was sent.
+For advanced cross-chain operations with composed messages using the AlphaTokenCrossChainManager:
 
-Congratulations, you have now sent an OFT cross-chain between Solana and Ethereum!
+**Sepolia to Holesky with Composed Message:**
+
+```bash
+pnpm hardhat lz:oft:send-composed \
+  --src-eid 40161 \
+  --dst-eid 40217 \
+  --amount 1000 \
+  --recipient "0x6E3a149F0972F9810B46D50C95e81A88b3f38E80" \
+  --message-type "CROSS_CHAIN_SEND"
+```
+
+**Available Message Types:**
+- `CROSS_CHAIN_SEND` - Standard cross-chain transfer with composed message
+- `BURNT` - Indicates tokens were burnt on source chain
+
+**Script Shortcuts:**
+
+```bash
+# Test composed message from Sepolia to Holesky
+./scripts/deploy-steps.sh test_composed_message_from_sepolia_to_holesky
+
+# Test regular cross-chain message
+./scripts/deploy-steps.sh test_cross_chain_message_from_sepolia_to_holesky
+```
+
+### Transaction Tracking
+
+Upon successful sends, you'll receive:
+- **Transaction Hash** - For block explorer verification
+- **LayerZero Scan Link** - For tracking cross-chain message delivery
+
+Example output:
+```
+🔗 Transaction Links:
+   Transaction Hash: 0x1234567890abcdef...
+   LayerZero Scan: https://testnet.layerzeroscan.com/tx/0x1234567890abcdef...
+   📊 Track your cross-chain transaction: https://testnet.layerzeroscan.com/tx/0x1234567890abcdef...
+```
+
+### Network Endpoint IDs
+
+- **Sepolia Testnet**: 40161
+- **Holesky Testnet**: 40217  
+- **Solana Devnet**: 40168
+
+> View the complete list on the [Deployed Endpoints](https://docs.layerzero.network/v2/deployments/deployed-contracts) page.
+
+Congratulations, you can now send OFTs cross-chain between Solana and Ethereum, including advanced composed messages!
 
 > If you run into any issues, refer to [Troubleshooting](#troubleshooting).
 
@@ -341,13 +428,30 @@ Examples:
 ./scripts/deploy-steps.sh wire_connections
 ```
 
-- Test sends
+- Setup cross-chain managers for all networks
 ```bash
-# Sepolia -> Solana (amount=1)
+./scripts/deploy-steps.sh setup_cross_chain_managers
+```
+
+- Token Management
+```bash
+# Mint 100 billion Alpha tokens to treasury
+./scripts/deploy-steps.sh mint_alpha_tokens_sepolia
+
+# Transfer tokens from treasury to owner for cross-chain ops
+./scripts/deploy-steps.sh transfer_tokens_treasury_to_owner
+```
+
+- Test cross-chain transfers
+```bash
+# Sepolia -> Solana (standard OFT, amount=1)
 ./scripts/deploy-steps.sh test_cross_chain_message_to_solana
 
-# Sepolia -> Holesky (amount=1)
+# Sepolia -> Holesky (standard OFT, amount=1)
 ./scripts/deploy-steps.sh test_cross_chain_message_from_sepolia_to_holesky
+
+# Sepolia -> Holesky (composed message, amount=1000)
+./scripts/deploy-steps.sh test_composed_message_from_sepolia_to_holesky
 ```
 
 - Full process (build, deploy, init, wire, verify, summary)
